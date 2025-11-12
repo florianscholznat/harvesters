@@ -1681,6 +1681,9 @@ class ImageAcquirer:
         if self._create_ds_at_connection:
             self._setup_data_streams()
 
+        if not self._data_streams:
+            return;
+            
         self._profiler = profiler
 
         self._num_buffers_to_hold = 1
