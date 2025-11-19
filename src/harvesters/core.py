@@ -1681,9 +1681,6 @@ class ImageAcquirer:
         if self._create_ds_at_connection:
             self._setup_data_streams()
 
-        if not self._data_streams:
-            return;
-            
         self._profiler = profiler
 
         self._num_buffers_to_hold = 1
@@ -1716,7 +1713,10 @@ class ImageAcquirer:
 
         num_buffers_default = ParameterSet.get(ParameterKey.NUM_BUFFERS_FOR_FETCH_CALL, 3, config)
         try:
-            self._min_num_buffers = self._data_streams[0].buffer_announce_min
+            if self._data_streams:
+                self._min_num_buffers = self._data_streams[0].buffer_announce_min
+            else:
+                self._min_num_buffers = 0
         except GenTL_GenericException as e:
             # In general, a GenTL Producer should not raise the
             # InvalidParameterException to the inquiry for
